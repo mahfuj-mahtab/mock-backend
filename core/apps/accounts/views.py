@@ -36,7 +36,7 @@ class RegisterView(APIView):
             success=True,
             message="Registration successful",
             data={
-                "user": UserSerializer(user).data,
+                "user": UserSerializer(user, context={"request": request}).data,
                 "access": str(refresh.access_token),
                 "refresh": str(refresh),
             },
@@ -94,5 +94,5 @@ class MeView(APIView):
         return api_response(
             success=True,
             message="Success",
-            data=UserSerializer(request.user).data,
+            data=UserSerializer(request.user, context={"request": request}).data,
         )

@@ -4,15 +4,24 @@ from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from apps.common.serializers import BaseModelSerializer
+from apps.profiles.serializers import ProfileSummarySerializer
 
 User = get_user_model()
 
 
 class UserSerializer(BaseModelSerializer):
+    profile = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ["id", "email", "first_name", "last_name", "date_joined"]
-        read_only_fields = ["id", "email", "first_name", "last_name", "date_joined"]
+        fields = ["id", "email", "first_name", "last_name", "date_joined", "profile"]
+        read_only_fields = ["id", "email", "first_name", "last_name", "date_joined", "profile"]
+
+    def get_profile(self, obj):
+        from apps.profiles.services import ProfileService
+
+        profile = ProfileService.get_profile(obj)
+        return ProfileSummarySerializer(profile, context=self.context).data
 
 
 class RegisterSerializer(serializers.Serializer):
@@ -50,5 +59,8 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
     def validate(self, attrs):
         data = super().validate(attrs)
-        data["user"] = UserSerializer(self.user).data
+        data["user"] = UserSerializer(
+            self.user,
+            context={"request": self.context.get("request")},
+        ).data
         return data
