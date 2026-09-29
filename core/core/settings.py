@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
 import sys
 from datetime import timedelta
 from pathlib import Path
@@ -162,3 +163,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
 ]
+
+GITHUB_CLIENT_ID = os.environ.get('GITHUB_CLIENT_ID', '')
+GITHUB_CLIENT_SECRET = os.environ.get('GITHUB_CLIENT_SECRET', '')
+GITHUB_CALLBACK_URL = os.environ.get(
+    'GITHUB_CALLBACK_URL',
+    'http://localhost:8000/api/v1/auth/github/callback/',
+)
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:3000')

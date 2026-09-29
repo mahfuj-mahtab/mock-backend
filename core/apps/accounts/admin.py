@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from apps.accounts.models import User
+from apps.accounts.models import SocialAccount, User
 
 
 @admin.register(User)
@@ -28,3 +28,9 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
+
+
+@admin.register(SocialAccount)
+class SocialAccountAdmin(admin.ModelAdmin):
+    list_display = ("provider", "provider_user_id", "user")
+    search_fields = ("provider_user_id", "user__email")
