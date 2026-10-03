@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'apps.common',
     'apps.accounts',
     'apps.profiles',
+    'apps.mock_prep',
 ]
 
 MIDDLEWARE = [
@@ -171,3 +172,5 @@ GITHUB_CALLBACK_URL = os.environ.get(
     'http://localhost:8000/api/v1/auth/github/callback/',
 )
 FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
+
+OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')
