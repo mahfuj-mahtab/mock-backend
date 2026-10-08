@@ -25,7 +25,13 @@ TURN_RESPONSE_SCHEMA = {
         "answer_score": {"type": ["number", "null"]},
         "feedback": {"type": ["string", "null"]},
     },
-    "required": ["interviewer_message", "action"],
+    "required": [
+        "interviewer_message",
+        "action",
+        "next_question_id",
+        "answer_score",
+        "feedback",
+    ],
     "additionalProperties": False,
 }
 

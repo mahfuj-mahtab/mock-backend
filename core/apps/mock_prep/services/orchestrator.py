@@ -92,7 +92,7 @@ class InterviewOrchestratorService:
             technology_ids,
         )
 
-        if candidates.count() < 15:
+        if candidates.count() < 2:
             raise ValidationError(
                 {
                     "detail": [
