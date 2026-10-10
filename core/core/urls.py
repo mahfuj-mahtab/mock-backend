@@ -8,6 +8,7 @@ urlpatterns = [
     path("api/v1/auth/", include("apps.accounts.urls")),
     path("api/v1/profile/", include("apps.profiles.urls")),
     path("api/v1/mock-prep/", include("apps.mock_prep.urls")),
+    path("api/v1/admin/mock-prep/", include("apps.mock_prep.admin_urls")),
 ]
 
 if settings.DEBUG:

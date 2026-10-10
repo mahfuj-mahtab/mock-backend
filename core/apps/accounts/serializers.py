@@ -14,8 +14,26 @@ class UserSerializer(BaseModelSerializer):
 
     class Meta:
         model = User
-        fields = ["id", "email", "first_name", "last_name", "date_joined", "profile"]
-        read_only_fields = ["id", "email", "first_name", "last_name", "date_joined", "profile"]
+        fields = [
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "date_joined",
+            "is_staff",
+            "is_superuser",
+            "profile",
+        ]
+        read_only_fields = [
+            "id",
+            "email",
+            "first_name",
+            "last_name",
+            "date_joined",
+            "is_staff",
+            "is_superuser",
+            "profile",
+        ]
 
     def get_profile(self, obj):
         from apps.profiles.services import ProfileService
