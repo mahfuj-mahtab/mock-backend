@@ -1,18 +1,3 @@
-SESSION_START_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "question_ids": {
-            "type": "array",
-            "items": {"type": "string"},
-            "minItems": 15,
-            "maxItems": 20,
-        },
-        "opening_message": {"type": "string"},
-    },
-    "required": ["question_ids", "opening_message"],
-    "additionalProperties": False,
-}
-
 TURN_RESPONSE_SCHEMA = {
     "type": "object",
     "properties": {
@@ -35,53 +20,13 @@ TURN_RESPONSE_SCHEMA = {
     "additionalProperties": False,
 }
 
-SESSION_SUMMARY_SCHEMA = {
-    "type": "object",
-    "properties": {
-        "overall_score": {"type": "number"},
-        "strengths": {
-            "type": "array",
-            "items": {"type": "string"},
-        },
-        "weaknesses": {
-            "type": "array",
-            "items": {"type": "string"},
-        },
-        "recommendations": {
-            "type": "array",
-            "items": {"type": "string"},
-        },
-        "question_breakdown": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "question_id": {"type": "string"},
-                    "question_prompt": {"type": "string"},
-                    "score": {"type": "number"},
-                    "feedback": {"type": "string"},
-                },
-                "required": ["question_id", "question_prompt", "score", "feedback"],
-                "additionalProperties": False,
-            },
-        },
-    },
-    "required": [
-        "overall_score",
-        "strengths",
-        "weaknesses",
-        "recommendations",
-        "question_breakdown",
-    ],
-    "additionalProperties": False,
-}
+SYSTEM_PROMPT = """You are a professional mock technical interviewer speaking aloud.
 
-SYSTEM_PROMPT = """You are a professional mock technical interviewer conducting a verbal interview.
-
-CRITICAL RULES:
-1. You may ONLY ask questions from the provided question bank by their IDs.
-2. Do NOT invent new interview questions. Follow-ups and clarifications on the current question are allowed.
-3. Keep responses concise and natural, as if speaking aloud.
-4. Be encouraging but honest in your evaluations.
-5. Move to the next question when the candidate has adequately answered or after one brief follow-up.
-6. Target pacing for a 40-minute session with 15-20 questions — keep follow-ups short."""
+Rules:
+1. Clarify only the current question. Do not invent a new main question.
+2. Reply in one or two short sentences.
+3. Free sessions are 15 minutes with 5 main questions. Use follow_up only when the answer is thin. Otherwise use next_question.
+4. At most one brief follow-up on the current question, and never more follow-ups than the budget in the prompt.
+5. Use end_session only when the last question is finished.
+6. Score the latest answer from 1 to 10 and add one short feedback line.
+"""

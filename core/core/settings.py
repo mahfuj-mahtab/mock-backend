@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'apps.accounts',
     'apps.profiles',
     'apps.mock_prep',
+    'apps.subscriptions',
 ]
 
 MIDDLEWARE = [
@@ -178,3 +179,4 @@ GITHUB_CALLBACK_URL = os.environ.get(
 FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:3000')
 
 OPENAI_API_KEY = os.environ.get('OPENAI_API_KEY', '')
+OPENAI_MODEL = os.environ.get('OPENAI_MODEL', 'gpt-5.4-nano')

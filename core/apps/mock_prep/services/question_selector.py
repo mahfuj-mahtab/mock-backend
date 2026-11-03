@@ -1,8 +1,9 @@
-from typing import Any
+import random
+from collections import defaultdict
 
 from django.db.models import QuerySet
 
-from apps.mock_prep.models import InterviewTrack, Question, Technology
+from apps.mock_prep.models import InterviewTrack, Question
 from apps.profiles.models import EngineerLevel
 
 
@@ -55,17 +56,30 @@ def filter_candidate_questions(
     return base_qs
 
 
-def serialize_questions_for_ai(questions: QuerySet[Question]) -> list[dict[str, Any]]:
-    return [
-        {
-            "id": str(question.id),
-            "category": question.category,
-            "level": question.level,
-            "prompt": question.prompt,
-            "estimated_minutes": question.estimated_minutes,
-        }
-        for question in questions
-    ]
+def select_session_questions(questions: QuerySet[Question], count: int) -> list[Question]:
+    pool = list(questions)
+    if count <= 0 or not pool:
+        return []
+    if len(pool) <= count:
+        random.shuffle(pool)
+        return pool
+
+    by_category: dict[str, list[Question]] = defaultdict(list)
+    for question in pool:
+        by_category[question.category].append(question)
+
+    for items in by_category.values():
+        random.shuffle(items)
+
+    categories = list(by_category.keys())
+    random.shuffle(categories)
+    selected: list[Question] = []
+    while len(selected) < count and any(by_category.values()):
+        for category in categories:
+            bucket = by_category[category]
+            if bucket and len(selected) < count:
+                selected.append(bucket.pop())
+    return selected
 
 
 def validate_selected_question_ids(
